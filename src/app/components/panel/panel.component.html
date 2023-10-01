@@ -1,0 +1,18 @@
+<div
+  class="panel"
+  cdkDropList
+  [id]="panelId"
+  [cdkDropListData]="tickets"
+  [ngStyle]="{ 'border-top': '5px solid ' + color }"
+  [cdkDropListConnectedTo]="connectedTo"
+  (cdkDropListDropped)="drop($event)"
+>
+  <h2 class="mt-3">{{ panelTitle }}</h2>
+  <app-ticket
+    *ngFor="let ticket of tickets"
+    [ticket]="ticket"
+    [color]="color"
+    cdkDrag
+    cdkDragSortingDisabled
+  ></app-ticket>
+</div>

@@ -1,0 +1,17 @@
+<div
+  class="ticket"
+  [ngStyle]="{ 'border-top': '5px solid ' + color }"
+  cdkDrag
+  [cdkDragData]="ticket.id"
+>
+  <h4 class="mt-3">{{ ticket.title }}</h4>
+  <div class="ticket-tags">
+    <span class="tag mt-1" *ngFor="let tag of ticket.tags">{{ tag }}</span>
+  </div>
+  <div class="ticket-dates">
+    <p class="auto-margin">Start: {{ ticket.startDate | date }}</p>
+    <p class="auto-margin">End: {{ ticket.endDate | date }}</p>
+  </div>
+
+  <div class="ticket-placeholder" *cdkDragPlaceholder></div>
+</div>

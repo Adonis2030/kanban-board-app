@@ -1,0 +1,152 @@
+<app-navbar></app-navbar>
+<div class="container-fluid mt-4">
+  <div class="panels" cdkDropListGroup>
+    <app-panel
+      panelId="todo"
+      panelTitle="TODO"
+      color="#9e9e9e"
+      [connectedTo]="['progress']"
+    ></app-panel>
+    <app-panel
+      panelId="progress"
+      panelTitle="IN PROGRESS"
+      color="#3f51b5"
+      [connectedTo]="['todo', 'review']"
+    ></app-panel>
+    <app-panel
+      panelId="review"
+      panelTitle="CODE REVIEW"
+      color="#ffc107"
+      [connectedTo]="['progress', 'qa']"
+    ></app-panel>
+    <app-panel
+      panelId="qa"
+      panelTitle="QA REVIEW"
+      color="#4caf50"
+      [connectedTo]="['review', 'completed']"
+    ></app-panel>
+    <app-panel
+      panelId="completed"
+      panelTitle="COMPLETED"
+      color="#4def80"
+      [connectedTo]="['qa']"
+    ></app-panel>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="addModalLabel">Create New Ticket</h2>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form" novalidate>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              formControlName="title"
+            />
+            <div
+              *ngIf="
+                form.get('title')?.invalid &&
+                (form.get('title')?.dirty || form.get('title')?.touched)
+              "
+              class="text-danger mt-1"
+            >
+              Title is required.
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="form-group">
+              <label>Tags</label>
+              <input
+                type="text"
+                class="form-control"
+                [formControl]="tagInput"
+                (keyup.enter)="addTag()"
+              />
+            </div>
+            <div class="tags">
+              <span class="tag text-bg-primary m-1" *ngFor="let tag of tags">
+                {{ tag }}
+                <span aria-hidden="true" (click)="removeTag(tag)" class="close"
+                  >&times;</span
+                >
+              </span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="start_date" class="form-label">Start Date*</label>
+            <input
+              type="date"
+              class="form-control"
+              id="start_date"
+              formControlName="startDate"
+            />
+            <div
+              *ngIf="
+                form.get('startDate')?.invalid &&
+                (form.get('startDate')?.dirty || form.get('startDate')?.touched)
+              "
+              class="text-danger mt-1"
+            >
+              Start date is required.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="end_date" class="form-label">End Date*</label>
+            <input
+              type="date"
+              class="form-control"
+              id="end_date"
+              formControlName="endDate"
+            />
+            <div
+              *ngIf="
+                form.get('endDate')?.invalid &&
+                (form.get('endDate')?.dirty || form.get('endDate')?.touched)
+              "
+              class="text-danger mt-1"
+            >
+              Start date is required.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="createNewTicket()"
+        >
+          <span *ngIf="!loading">Save</span>
+          <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
